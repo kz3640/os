@@ -22,8 +22,10 @@ environment:
       - ca-certificates-bundle
       - openjdk-11
       - patch
-      - py3-googleapis-common-protos
+      - py3-absl-py
+      - py3-numpy
       - py3-pip
+      - py3-protobuf
       - py3-setuptools
       - python3-dev
   environment:
@@ -40,7 +42,6 @@ pipeline:
   - runs: |
       bazel build tensorboard:tensorboard
       mkdir -p "${{targets.contextdir}}/usr/bin"
-      cp bazel-bin/ml_metadata/metadata_store/metadata_store_server "${{targets.contextdir}}/usr/bin"
 
 update:
   enabled: true
