@@ -22,6 +22,7 @@ environment:
       - ca-certificates-bundle
       - openjdk-11
       - patch
+      - protobuf
       - py3-setuptools
       - python3-dev
   environment:
