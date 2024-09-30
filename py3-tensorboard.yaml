@@ -33,22 +33,12 @@ pipeline:
 
   - runs: |
       bazel build tensorboard:tensorboard
-
-subpackages:
-  - name: ml-metadata-store-server
-    description: ML Metadata remote gRPC server
-    pipeline:
-      - runs: |
-          # Reduce the number of jobs to avoid OOM
-          bazel build -c opt --define grpc_no_ares=true --jobs $(($(grep -c ^processor /proc/cpuinfo) / 2)) //ml_metadata/metadata_store:metadata_store_server
-
-          mkdir -p "${{targets.contextdir}}/usr/bin"
-          cp bazel-bin/ml_metadata/metadata_store/metadata_store_server "${{targets.contextdir}}/usr/bin"
-      - uses: strip
+      mkdir -p "${{targets.contextdir}}/usr/bin"
+      cp bazel-bin/ml_metadata/metadata_store/metadata_store_server "${{targets.contextdir}}/usr/bin"
 
 update:
   enabled: true
   github:
-    identifier: google/ml-metadata
+    identifier: tensorflow/tensorboard
     use-tag: true
     strip-prefix: v
