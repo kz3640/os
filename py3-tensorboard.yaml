@@ -23,6 +23,7 @@ environment:
       - openjdk-11
       - patch
       - py3-googleapis-common-protos
+      - py3-pip
       - py3-setuptools
       - python3-dev
   environment:
