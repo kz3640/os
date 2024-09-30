@@ -24,6 +24,9 @@ environment:
       - patch
       - py3-setuptools
       - python3-dev
+  environment:
+    JAVA_HOME: /usr/lib/jvm/java-11-openjdk
+    BAZEL_CXXOPTS: -std=c++17:-w
 
 pipeline:
   - uses: git-checkout
