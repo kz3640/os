@@ -41,6 +41,7 @@ pipeline:
 
   - runs: |
       bazel build tensorboard:tensorboard
+      ./bazel-bin/tensorboard/tensorboard
       mkdir -p "${{targets.contextdir}}/usr/bin"
 
 update:
