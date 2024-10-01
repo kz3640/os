@@ -1,6 +1,6 @@
 package:
-  name: py3-ml-metadata
-  version: 2.18.0
+  name: py3-tensorboard
+  version: 2.15.0
   epoch: 0
   description: TensorFlow's Visualization Toolkit.
   copyright:
