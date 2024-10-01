@@ -24,9 +24,10 @@ environment:
       - openjdk-11
       - patch
       - python-3.10
-      - py3-absl-py
-      - py3-setuptools
+      - py3.10-pip
       - py3.10-tensorflow-core
+      - py3.10-setuptools
+      - tensorflow-core
   environment:
     JAVA_HOME: /usr/lib/jvm/java-11-openjdk
     BAZEL_CXXOPTS: -std=c++17:-w
@@ -40,8 +41,9 @@ pipeline:
 
   - runs: |
       bazel build //tensorflow_estimator/tools/pip_package:build_pip_package
-      mkdir -p "${{targets.contextdir}}/usr/bin"
-      cp bazel-bin/tensorflow_estimator "${{targets.contextdir}}/usr/bin"
+      bazel-bin/tensorflow_estimator/tools/pip_package/build_pip_package /tmp/estimator_pip
+      mkdir -p ${{targets.destdir}}/usr/share/${{package.name}}/wheels
+      cp /tmp/estimator_pip/*.whl ${{targets.destdir}}/usr/share/${{package.name}}/wheels/
 
 update:
   enabled: true
