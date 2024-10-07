@@ -49,12 +49,14 @@ test:
   environment:
     contents:
       packages:
+        - apk-tools
         - python-3.10
         - py3.10-pip
   pipeline:
     - runs: |
         pip install tensorflow==${{package.version}}
         pip uninstall -y tensorflow-estimator
+        apk add py3-tensorflow-estimator
         python -c "import tensorflow as tf; print(tf.__version__); print(tf.estimator.__version__)"
 
 update:
