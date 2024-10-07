@@ -5,14 +5,14 @@ package:
   description: TensorFlow's Visualization Toolkit.
   copyright:
     - license: Apache-2.0
-  resources:
-    cpu: 14
-    memory: 50Gi
+  dependencies:
+    runtime:
+      - python-3.10
+      - py3.10-six
 
 environment:
   contents:
     packages:
-      - apk-tools #testing
       - bash
       - bazel-6
       - build-base
@@ -27,7 +27,6 @@ environment:
       - py3.10-pip
       - py3.10-tensorflow-core
       - py3.10-setuptools
-      - tensorflow-core
   environment:
     JAVA_HOME: /usr/lib/jvm/java-11-openjdk
     BAZEL_CXXOPTS: -std=c++17:-w
@@ -42,16 +41,21 @@ pipeline:
   - runs: |
       bazel build //tensorflow_estimator/tools/pip_package:build_pip_package
       bazel-bin/tensorflow_estimator/tools/pip_package/build_pip_package /tmp/estimator_pip
-      exit 1
       python3.10 -m pip install --verbose \
         --no-index --no-build-isolation --no-deps \
-        --force-reinstall --no-compile --prefix=/usr "--root=${{targets.destdir}}" /tmp/estimator_pip/tensorflow_estimator-2.15.0-py2.py3-none-any.whl
-
+        --force-reinstall --no-compile --prefix=/usr "--root=${{targets.contextdir}}" /tmp/estimator_pip/tensorflow_estimator-2.15.0-py2.py3-none-any.whl
 
 test:
+  environment:
+    contents:
+      packages:
+        - python-3.10
+        - py3.10-pip
   pipeline:
     - runs: |
-        tensorflow-estimator --version
+        pip install tensorflow==${{package.version}}
+        pip uninstall -y tensorflow-estimator
+        python -c "import tensorflow as tf; print(tf.__version__); print(tf.estimator.__version__)"
 
 update:
   enabled: true
