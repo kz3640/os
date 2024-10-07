@@ -42,8 +42,10 @@ pipeline:
   - runs: |
       bazel build //tensorflow_estimator/tools/pip_package:build_pip_package
       bazel-bin/tensorflow_estimator/tools/pip_package/build_pip_package /tmp/estimator_pip
-      mkdir -p ${{targets.destdir}}/usr/share/${{package.name}}/wheels
-      cp /tmp/estimator_pip/*.whl ${{targets.destdir}}/usr/share/${{package.name}}/wheels/
+      exit 1
+      python3.10 -m pip install --verbose \
+        --no-index --no-build-isolation --no-deps \
+        --force-reinstall --no-compile --prefix=/usr "--root=${{targets.destdir}}" /tmp/estimator_pip/tensorflow_estimator-2.15.0-py2.py3-none-any.whl
 
 
 test:
