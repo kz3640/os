@@ -33,12 +33,39 @@ pipeline:
       expected-commit: 5d0c9a008cce30b2b3839874c9f1f2ca8ddc38de
       tag: v${{package.version}}
 
-  - range: binaries
-    name: build-binaries
+  - name: build-mlserver-adapter
     uses: go/build
     with:
-      output: /usr/bin/${{range.key}}
-      packages: ./${{range.value}}
+      output: /usr/bin/mlserver-adapter
+      packages: ./model-mesh-mlserver-adapter
+      ldflags: -s
+
+  - name: build-ovms-adapter
+    uses: go/build
+    with:
+      output: /usr/bin/ovms-adapter
+      packages: ./model-mesh-ovms-adapter
+      ldflags: -s
+
+  - name: build-torchserve-adapter
+    uses: go/build
+    with:
+      output: /usr/bin/torchserve-adapter
+      packages: ./model-mesh-torchserve-adapter
+      ldflags: -s
+
+  - name: build-triton-adapter
+    uses: go/build
+    with:
+      output: /usr/bin/triton-adapter
+      packages: ./model-mesh-triton-adapter
+      ldflags: -s
+
+  - name: build-puller
+    uses: go/build
+    with:
+      output: /usr/bin/puller
+      packages: ./model-serving-puller
       ldflags: -s
 
   - name: "modelmesh-runtime-adapter-compat"
@@ -56,11 +83,6 @@ test:
   environment:
     contents:
       packages:
-        - ${{package.name}}-mlserver-adapter
-        - ${{package.name}}-ovms-adapter
-        - ${{package.name}}-torchserve-adapter
-        - ${{package.name}}-triton-adapter
-        - ${{package.name}}-puller
         - ${{package.name}}-compat
   pipeline:
     - name: TEST
