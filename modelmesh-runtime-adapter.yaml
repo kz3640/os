@@ -35,35 +35,35 @@ pipeline:
 
   - uses: go/build
     with:
-      output: /usr/bin/mlserver-adapter
+      output: mlserver-adapter
       packages: ./model-mesh-mlserver-adapter
       ldflags: -s
 
   - name: build-ovms-adapter
     uses: go/build
     with:
-      output: /usr/bin/ovms-adapter
+      output: ovms-adapter
       packages: ./model-mesh-ovms-adapter
       ldflags: -s
 
   - name: build-torchserve-adapter
     uses: go/build
     with:
-      output: /usr/bin/torchserve-adapter
+      output: torchserve-adapter
       packages: ./model-mesh-torchserve-adapter
       ldflags: -s
 
   - name: build-triton-adapter
     uses: go/build
     with:
-      output: /usr/bin/triton-adapter
+      output: triton-adapter
       packages: ./model-mesh-triton-adapter
       ldflags: -s
 
   - name: build-puller
     uses: go/build
     with:
-      output: /usr/bin/puller
+      output: puller
       packages: ./model-serving-puller
       ldflags: -s
 
