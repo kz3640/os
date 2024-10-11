@@ -32,8 +32,7 @@ pipeline:
       repository: https://github.com/kserve/modelmesh-runtime-adapter
       expected-commit: 5d0c9a008cce30b2b3839874c9f1f2ca8ddc38de
       tag: v${{package.version}}
-
-subpackages:
+      
   - range: binaries
     name: "modelmesh-runtime-adapter-${{range.key}}"
     description: "${{range.key}} binary for modelmesh-runtime-adapter"
@@ -44,7 +43,7 @@ subpackages:
           packages: ./${{range.value}}
           ldflags: -s
 
-  - name: "modelmesh-runtime-adapter-compat"
+  - name: "${{package.name}}-compat"
     description: "compat package to place binaries in location expected by upstream helm chart"
     pipeline:
       - runs: |
@@ -59,11 +58,6 @@ test:
   environment:
     contents:
       packages:
-        - ${{package.name}}-mlserver-adapter
-        - ${{package.name}}-ovms-adapter
-        - ${{package.name}}-torchserve-adapter
-        - ${{package.name}}-triton-adapter
-        - ${{package.name}}-puller
         - ${{package.name}}-compat
   pipeline:
     - name: TEST
